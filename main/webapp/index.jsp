@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-<form action="/h"><input type="submit" value="Hiển thị danh sách"></form>
+
 
 </body>
 </html>

@@ -1,3 +1,4 @@
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -7,26 +8,62 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sun.awt.PaintEventDispatcher.dispatcher;
 
-@WebServlet(name = "CustomerServlet",urlPatterns = "/h")
+
+@WebServlet(name = "CustomerServlet",urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        if(action==null) {
+            action="";
+        }
+        switch (action) {
+            case "create":
+                break;
+            case "edit":
+                break;
+            case "delete":
+                break;
+            default:
+                break;
+        }
 
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Customer> customerList = new ArrayList<>();
-        customerList.add(new Customer("Miku Ohashi","0123456789","Ha Noi","10-10-1995"));
-        customerList.add(new Customer("Honda Nanako","012345677","Nhat Ban","10-10-2000"));
-        customerList.add(new Customer("Tachibana","012345677","NhatBan","10-10-1999"));
-        customerList.add(new Customer("Trieu Le Dinh","012345677","Trung Quoc","10-10-1994"));
-        customerList.add(new Customer("Minh Quang","0123456789","Ha Noi","14-09-1999"));
+        String action = request.getParameter("action");
+        if(action == null){
+            action = "";
+        }
+        switch (action){
+            case "create":
+                break;
+            case "edit":
+                break;
+            case "delete":
+                break;
+            case "view":
+                break;
+            default:
+                listCustomers(request,response);
+                break;
+        }
 
-        request.setAttribute("customer",customerList);
-        dispatcher.foward(request,response);
 
 
+    }
+    private void listCustomers(HttpServletRequest request,HttpServletResponse response) {
+        List<Customer> customers = this.customerService.findAll();
+        request.setAttribute("customers", customers);
 
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/list.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
